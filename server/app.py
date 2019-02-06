@@ -5,6 +5,11 @@ from bottle import Bottle, request, response, run, static_file
 app = Bottle()
 
 
+@app.route("/")
+def do_main():
+    return static_file("index.html", root="../client/")
+
+
 @app.route("/<filename:path>")
 def do_static(filename):
     """
@@ -12,16 +17,8 @@ def do_static(filename):
     """
     return static_file(filename, root="../client/")
 
-@app.route("/")
-def do_static():
-
-    return static_file("index.html", root="../client/")
-
-
-
 @app.route("/udpate/")
 def do_update():
-
     return "Data updated"
 
 
