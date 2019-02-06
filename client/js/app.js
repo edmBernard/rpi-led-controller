@@ -5,6 +5,19 @@ var dim = 8;
 var board_size = 400;
 var square_size = board_size / dim;
 var border_grid_size = 1
+var square_list = []
+
+function turn_off() {
+    for (let i = 0; i < square_list.length; i++) {
+        square_list[i].attr({fill: "#000000"});
+    }
+}
+
+function turn_on() {
+    for (let i = 0; i < square_list.length; i++) {
+        square_list[i].attr({fill: "#4286f4"});
+    }
+}
 
 var Board = {
     view: function(vnode) {
@@ -18,8 +31,8 @@ var Client = {
             m("h1", "Raspberry led controler"),
             m("div", {class: "pure-g"}, [
                 m("div", {class: "pure-u-1"},
-                    m("button", {class: "pure-button pure-button-primary button-on"}, "Turn ON"),
-                    m("button", {class: "pure-button pure-button-primary button-on"}, "Turn OFF")
+                    m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_on}, "Turn ON"),
+                    m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_off}, "Turn OFF")
                 )
             ]),
             m(Board),
@@ -39,14 +52,13 @@ m.mount(root, Client)
 var s = Snap("#svg");
 for (let i = 0; i < dim; i++) {
     for (let j = 0; j < dim; j++) {
-        var square = s.rect(i * square_size, j * square_size, square_size - border_grid_size, square_size - border_grid_size);
+        let square = s.rect(i * square_size, j * square_size, square_size - border_grid_size, square_size - border_grid_size);
         square.attr({fill: '#4286f4'});
-        function create_click_callback(form) {
-            return function() {
-                form.attr({fill: '#000000'});
-            }
-        }
-        square.click(create_click_callback(square));
+        square_list.push(square);
+        square.click(function () {
+            square.attr({fill: "#000000"})
+        });
     }
 }
+
 
