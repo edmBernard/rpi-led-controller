@@ -204,7 +204,7 @@ var ColorPicker = {
 var Client = {
     view: function(vnode) {
         return m("main", {class: "main"}, [
-            m("h1", "Raspberry Pi LED Controler"),
+            m("h1", "Raspberry Pi LED Controller"),
             m("div", {class: "pure-g button-container"}, [
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"},
                     m("button", {class: "pure-button pure-button-primary", onclick: function() {turn_on();sensehat_update()}}, "Turn ON"),
