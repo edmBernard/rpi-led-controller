@@ -2,27 +2,13 @@ var root = document.body
 var count = 0 // added a variable
 
 var dim = 8;
-
-var Square = {
-    view: function(vnode) {
-        return m("div" , {class: "pure-u-1-8"},
-            m("button", {class: "pure-button", onclick: function() {count++}}, count + " clicks")
-        );
-    }
-}
+var board_size = 400;
+var square_size = board_size / dim;
+var border_grid_size = 1
 
 var Board = {
     view: function(vnode) {
-        let board = [];
-        let row = [];
-        for (let i = 0; i < dim; i++) {
-            for (let j = 0; j < dim; j++) {
-                row.push(m(Square));
-            }
-            board.push(m("div", {class: "pure-g"}, row));
-            row = [];
-        }
-        return m("board", board);
+        return m("board", m("svg", {id: "svg", width: board_size, height: board_size}));
     }
 }
 
@@ -50,4 +36,17 @@ var Client = {
 
 m.mount(root, Client)
 
+var s = Snap("#svg");
+for (let i = 0; i < dim; i++) {
+    for (let j = 0; j < dim; j++) {
+        var square = s.rect(i * square_size, j * square_size, square_size - border_grid_size, square_size - border_grid_size);
+        square.attr({fill: '#4286f4'});
+        function create_click_callback(form) {
+            return function() {
+                form.attr({fill: '#000000'});
+            }
+        }
+        square.click(create_click_callback(square));
+    }
+}
 
