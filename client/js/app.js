@@ -22,6 +22,13 @@ for (let i = 0; i < 360; i+=360/nbr_color) {
 color_wheel.push("#ffffff");
 color_wheel.push("#000000");
 
+function get_colors() {
+    let c = [];
+    for (let i = 0; i < square_list.length; i++) {
+        c.push(color_wheel[square_list[i].color_idx]);
+    }
+    return c;
+}
 
 function turn_off() {
     for (let i = 0; i < square_list.length; i++) {
@@ -208,6 +215,11 @@ for (let i = 0; i < nbr_color + 2; i++) {
 
     square.click(function () {
         color_picked = square.color_idx;
+        m.request({
+            method: "POST",
+            url: "/update",
+            data: get_colors()
+        })
     });
 }
 
