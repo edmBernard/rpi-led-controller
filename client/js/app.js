@@ -15,6 +15,8 @@ var border_grid_size = 1
 var square_list = []
 var color_picked = 0
 
+
+
 function hsl2rgb(h,s,l)
 {
   let a=s*Math.min(l,1-l);
@@ -42,6 +44,14 @@ function get_colors() {
     return c;
 }
 
+function update_sensehat() {
+    m.request({
+        method: "POST",
+        url: "/update",
+        data: get_colors()
+    })
+}
+
 function turn_off() {
     for (let i = 0; i < square_list.length; i++) {
         square_list[i].attr({fill: "#000000"});
@@ -57,7 +67,7 @@ function turn_on() {
 function turn_reset() {
     for (let i = 0; i < square_list.length; i++) {
         square_list[i].color_idx = color_wheel.length - 1;
-        square_list[i].attr({fill: color_wheel[square_list[i].color_idx++]});
+        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
     }
 }
 
@@ -209,6 +219,7 @@ for (let i = 0; i < dim; i++) {
             function () {
                 square.color_idx = color_picked;
                 square.attr({fill: color_wheel[color_picked]});
+                update_sensehat();
             },
             function () {}
         );
@@ -227,11 +238,7 @@ for (let i = 0; i < nbr_color + 2; i++) {
 
     square.click(function () {
         color_picked = square.color_idx;
-        m.request({
-            method: "POST",
-            url: "/update",
-            data: get_colors()
-        })
+        update_sensehat();
     });
 }
 
