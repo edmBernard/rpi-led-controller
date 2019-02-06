@@ -37,8 +37,14 @@ color_wheel.push("#000000");
 
 function get_colors() {
     let c = [];
-    for (let i = 0; i < square_list.length; i++) {
-        c.push(color_wheel[square_list[i].color_idx]);
+    if (square_list.length == 0) {
+        for (let i = 0; i < dim*dim; i++) {
+            c.push(color_wheel[color_wheel.length - 1]);
+        }
+    } else {
+        for (let i = 0; i < square_list.length; i++) {
+            c.push(color_wheel[square_list[i].color_idx]);
+        }
     }
     return c;
 }
@@ -86,9 +92,9 @@ function turn_benjamin() {
 
     for (let i = 0; i < square_list.length; i++) {
         if (schema[i] == 0) {
-            square_list[i].color_idx = color1+1;
+            square_list[i].color_idx = color1;
         } else {
-            square_list[i].color_idx = color2+1;
+            square_list[i].color_idx = color2;
         }
         square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
     }
@@ -119,9 +125,9 @@ function turn_invader() {
 
     for (let i = 0; i < square_list.length; i++) {
         if (schema[i] == 0) {
-            square_list[i].color_idx = color1+1;
+            square_list[i].color_idx = color1;
         } else {
-            square_list[i].color_idx = color2+1;
+            square_list[i].color_idx = color2;
         }
         square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
     }
@@ -143,9 +149,9 @@ function turn_question() {
 
     for (let i = 0; i < square_list.length; i++) {
         if (schema[i] == 0) {
-            square_list[i].color_idx = color1+1;
+            square_list[i].color_idx = color1;
         } else {
-            square_list[i].color_idx = color2+1;
+            square_list[i].color_idx = color2;
         }
         square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
     }
@@ -233,8 +239,6 @@ for (let i = 0; i < nbr_color + 2; i++) {
     let square = sc.rect(i * pellet_size, 0, pellet_size - border_grid_size, square_size - border_grid_size);
     square.attr({fill: color_wheel[i]});
     square.color_idx = i;  // Inject color index property
-
-    // square_list.push(square);
 
     square.click(function () {
         color_picked = square.color_idx;
