@@ -22,7 +22,7 @@ def do_update():
     return "Data updated"
 
 
-def main(port, server="tornado"):
+def main(port=8000, server="tornado"):
     run(app, host="0.0.0.0", port=port, server=server)
 
 
