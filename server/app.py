@@ -21,10 +21,7 @@ def do_static(filename):
 
 @app.route("/update", method='POST')
 def do_update():
-    print(json.loads(request.body.getvalue().decode('utf-8')))
     colors = json.loads(request.body.getvalue().decode('utf-8'))
-
-    print([[int(i.lstrip("#")[j:j+2], 16) for j in (0, 2, 4)] for i in colors])
 
     pixels = [[int(i.lstrip("#")[j:j+2], 16) for j in (0, 2, 4)] for i in colors]
 

@@ -6,8 +6,10 @@ var dim = 8;
 var board_size = 400;
 var square_size = board_size / dim;
 
-var nbr_color = 20 // don't change without break every things
-var pellet_size = board_size / (nbr_color + 2);  // black and white color
+var nbr_color = 20     // don't change without break every things
+var nbr_color_row = 10 // don't change without break every things
+var pellet_size = board_size / nbr_color;  // black and white color
+var color_picker_height = 100
 
 var border_grid_size = 1
 
@@ -29,8 +31,11 @@ let rgb2hex = (r,g,b) =>
 ).join('');
 
 var color_wheel = []
-for (let i = 0; i < 360; i+=360/nbr_color) {
-    color_wheel.push(rgb2hex(...hsl2rgb(i,1,0.5)));
+for (let j = 0; j < nbr_color_row; j++) {
+    for (let i = 0; i < 360; i+= 360/nbr_color) {
+        // color_wheel.push(rgb2hex(...hsl2rgb(i, 1, j*nbr_color_row/100)));
+        color_wheel.push(rgb2hex(...hsl2rgb(i, 1, j/(nbr_color_row-1)*(0.7) + 0.2)));
+    }
 }
 color_wheel.push("#ffffff");
 color_wheel.push("#000000");
@@ -194,7 +199,7 @@ var Board = {
 
 var ColorPicker = {
     view: function(vnode) {
-        return m("svg", {id: "colorpicker", width: board_size, height: square_size});
+        return m("svg", {id: "colorpicker", width: board_size, height: color_picker_height});
     }
 }
 
@@ -253,13 +258,20 @@ for (let j = 0; j < dim; j++) {
     }
 }
 
+function create_pellet(form, row, col) {
+    let square = form.rect(col*pellet_size, row*color_picker_height/(nbr_color_row+1), pellet_size - border_grid_size, color_picker_height/(nbr_color_row+1) - border_grid_size);
+    square.color_idx = col+row*nbr_color;  // Inject color index property
+    square.attr({fill: color_wheel[square.color_idx]});
 
-
-var sc = Snap("#colorpicker");
-for (let i = 0; i < nbr_color + 2; i++) {
-    let square = sc.rect(i * pellet_size, 0, pellet_size - border_grid_size, square_size - border_grid_size);
-    square.attr({fill: color_wheel[i]});
-    square.color_idx = i;  // Inject color index property
+    square.click(function () {
+        color_picked = square.color_idx;
+        sensehat_update();
+    });
+}
+function create_black(form, row, col) {
+    let square = form.rect(col*board_size/2, row*color_picker_height/(nbr_color_row+1), board_size/2 - border_grid_size, color_picker_height/(nbr_color_row+1) - border_grid_size);
+    square.color_idx = col+row*nbr_color;  // Inject color index property
+    square.attr({fill: color_wheel[square.color_idx]});
 
     square.click(function () {
         color_picked = square.color_idx;
@@ -267,4 +279,11 @@ for (let i = 0; i < nbr_color + 2; i++) {
     });
 }
 
-
+var sc = Snap("#colorpicker");
+for (let j = 0; j < nbr_color_row; j++) {
+    for (let i = 0; i < nbr_color; i++) {
+        create_pellet(sc, j, i);
+    }
+}
+create_black(sc, nbr_color_row, 0);
+create_black(sc, nbr_color_row, 1);
