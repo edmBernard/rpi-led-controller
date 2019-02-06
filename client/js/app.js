@@ -204,19 +204,19 @@ var Client = {
             m("h1", "Raspberry Pi LED Controler"),
             m("div", {class: "pure-g"}, [
                 m("div", {class: "pure-u-1"},
-                    m("button", {class: "pure-button pure-button-primary button-on", onclick: [turn_on, sensehat_update]}, "Turn ON"),
-                    m("button", {class: "pure-button pure-button-primary button-on", onclick: [turn_off, sensehat_off]}, "Turn OFF")
+                    m("button", {class: "pure-button pure-button-primary button-on", onclick: function() {turn_on();sensehat_update()}}, "Turn ON"),
+                    m("button", {class: "pure-button pure-button-primary button-on", onclick: function() {turn_off();sensehat_off()}}, "Turn OFF")
                 )
             ]),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(Board))),
             m("div", {class: "pure-g"},
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"}, [
-                    m("button", {class: "pure-button button-error", onclick: [turn_reset, sensehat_update]}, "Reset"),
-                    m("button", {class: "pure-button", onclick: [turn_benjamin, sensehat_update]}, "Benjamin"),
-                    m("button", {class: "pure-button", onclick: [turn_rainbow, sensehat_update]}, "Rainbow"),
-                    m("button", {class: "pure-button", onclick: [turn_invader, sensehat_update]}, "Invader"),
-                    m("button", {class: "pure-button", onclick: [turn_question, sensehat_update]}, "Question")
+                    m("button", {class: "pure-button button-error", onclick: function() {turn_reset();sensehat_update()}}, "Reset"),
+                    m("button", {class: "pure-button", onclick: function() {turn_benjamin();sensehat_update()}}, "Benjamin"),
+                    m("button", {class: "pure-button", onclick: function() {turn_rainbow();sensehat_update()}}, "Rainbow"),
+                    m("button", {class: "pure-button", onclick: function() {turn_invader();sensehat_update()}}, "Invader"),
+                    m("button", {class: "pure-button", onclick: function() {turn_question();sensehat_update()}}, "Question")
                 ])
             )
         ])
