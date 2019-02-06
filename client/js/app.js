@@ -16,7 +16,6 @@ var square_list = []
 var color_picked = 0
 
 
-
 function hsl2rgb(h,s,l)
 {
   let a=s*Math.min(l,1-l);
@@ -173,6 +172,7 @@ var ColorPicker = {
 
 var Client = {
     view: function(vnode) {
+        update_sensehat()
         return m("main", [
             m("h1", "Raspberry Pi LED Controler"),
             m("div", {class: "pure-g"}, [
