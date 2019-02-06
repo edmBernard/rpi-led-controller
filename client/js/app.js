@@ -135,14 +135,14 @@ function turn_invader() {
     let color1 = color_wheel.length - 1;  // black
     let color2 = 7;  // green
     let schema = [
-        0, 0, 0, 1, 1, 0, 0, 1,
-        0, 0, 1, 1, 1, 0, 1, 0,
-        0, 1, 1, 0, 1, 1, 0, 1,
-        1, 1, 1, 1, 1, 0, 1, 0,
-        1, 1, 1, 1, 1, 0, 1, 0,
-        0, 1, 1, 0, 1, 1, 0, 1,
-        0, 0, 1, 1, 1, 0, 1, 0,
-        0, 0, 0, 1, 1, 0, 0, 1,
+        0, 0, 0, 1, 1, 0, 0, 0,
+        0, 0, 1, 1, 1, 1, 0, 0,
+        0, 1, 1, 1, 1, 1, 1, 0,
+        1, 1, 0, 1, 1, 0, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 1, 0, 0, 1, 0, 0,
+        0, 1, 0, 1, 1, 0, 1, 0,
+        1, 0, 1, 0, 0, 1, 0, 1,
     ]
 
     for (let i = 0; i < square_list.length; i++) {
@@ -159,14 +159,14 @@ function turn_question() {
     let color1 = color_wheel.length - 1;  // black
     let color2 = 0;  // red
     let schema = [
+        0, 0, 0, 1, 1, 0, 0, 0,
+        0, 0, 1, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 1, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 1, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 1, 1, 0, 1,
-        1, 0, 0, 1, 0, 0, 0, 0,
-        0, 1, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 0, 0, 0, 0,
     ]
 
     for (let i = 0; i < square_list.length; i++) {
@@ -227,8 +227,8 @@ m.mount(root, Client)
 
 
 var sb = Snap("#board");
-for (let i = 0; i < dim; i++) {
-    for (let j = 0; j < dim; j++) {
+for (let j = 0; j < dim; j++) {
+    for (let i = 0; i < dim; i++) {
         let square = sb.rect(i * square_size, j * square_size, square_size, square_size);
         square.color_idx = color_wheel.length - 1;  // Inject color index property
         square.attr({fill: color_wheel[square.color_idx]});
