@@ -15,9 +15,21 @@ var border_grid_size = 1
 var square_list = []
 var color_picked = 0
 
+function hsl2rgb(h,s,l)
+{
+  let a=s*Math.min(l,1-l);
+  let f= (n,k=(n+h/30)%12) => l - a*Math.max(Math.min(k-3,9-k,1),-1);
+  return [f(0),f(8),f(4)];
+}
+
+// r,g,b are in [0-1], result e.g. #0812fa.
+let rgb2hex = (r,g,b) =>
+   "#" + [r,g,b].map( x=>Math.round(x*255).toString(16).padStart(2,0)
+).join('');
+
 var color_wheel = []
 for (let i = 0; i < 360; i+=360/nbr_color) {
-    color_wheel.push("hsl(" + i/360 + ", 100%, 50%)");
+    color_wheel.push(rgb2hex(...hsl2rgb(i,1,0.5)));
 }
 color_wheel.push("#ffffff");
 color_wheel.push("#000000");
