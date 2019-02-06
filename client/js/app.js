@@ -49,11 +49,37 @@ function get_colors() {
     return c;
 }
 
-function update_sensehat() {
+function sensehat_update() {
     m.request({
         method: "POST",
         url: "/update",
-        data: get_colors()
+        data: function() {
+            let c = [];
+            if (square_list.length == 0) {
+                for (let i = 0; i < dim*dim; i++) {
+                    c.push(color_wheel[color_wheel.length - 1]);
+                }
+            } else {
+                for (let i = 0; i < square_list.length; i++) {
+                    c.push(color_wheel[square_list[i].color_idx]);
+                }
+            }
+            return c;
+        }
+    })
+}
+
+function sensehat_off() {
+    m.request({
+        method: "POST",
+        url: "/update",
+        data: function() {
+            let c = [];
+            for (let i = 0; i < dim*dim; i++) {
+                c.push(color_wheel[color_wheel.length - 1]);
+            }
+            return c;
+        }
     })
 }
 
@@ -178,24 +204,23 @@ var ColorPicker = {
 
 var Client = {
     view: function(vnode) {
-        update_sensehat()
         return m("main", [
             m("h1", "Raspberry Pi LED Controler"),
             m("div", {class: "pure-g"}, [
                 m("div", {class: "pure-u-1"},
-                    m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_on}, "Turn ON"),
-                    m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_off}, "Turn OFF")
+                    m("button", {class: "pure-button pure-button-primary button-on", onclick: [turn_on, sensehat_update]}, "Turn ON"),
+                    m("button", {class: "pure-button pure-button-primary button-on", onclick: [turn_off, sensehat_off]}, "Turn OFF")
                 )
             ]),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(Board))),
             m("div", {class: "pure-g"},
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"}, [
-                    m("button", {class: "pure-button button-error", onclick: turn_reset}, "Reset"),
-                    m("button", {class: "pure-button", onclick: turn_benjamin}, "Benjamin"),
-                    m("button", {class: "pure-button", onclick: turn_rainbow}, "Rainbow"),
-                    m("button", {class: "pure-button", onclick: turn_invader}, "Invader"),
-                    m("button", {class: "pure-button", onclick: turn_question}, "Question")
+                    m("button", {class: "pure-button button-error", onclick: [turn_reset, sensehat_update]}, "Reset"),
+                    m("button", {class: "pure-button", onclick: [turn_benjamin, sensehat_update]}, "Benjamin"),
+                    m("button", {class: "pure-button", onclick: [turn_rainbow, sensehat_update]}, "Rainbow"),
+                    m("button", {class: "pure-button", onclick: [turn_invader, sensehat_update]}, "Invader"),
+                    m("button", {class: "pure-button", onclick: [turn_question, sensehat_update]}, "Question")
                 ])
             )
         ])
@@ -225,7 +250,7 @@ for (let i = 0; i < dim; i++) {
             function () {
                 square.color_idx = color_picked;
                 square.attr({fill: color_wheel[color_picked]});
-                update_sensehat();
+                sensehat_update();
             },
             function () {}
         );
@@ -242,7 +267,7 @@ for (let i = 0; i < nbr_color + 2; i++) {
 
     square.click(function () {
         color_picked = square.color_idx;
-        update_sensehat();
+        sensehat_update();
     });
 }
 
