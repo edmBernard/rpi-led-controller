@@ -9,9 +9,7 @@ var square_size = board_size / dim;
 var nbr_color = 20     // don't change without break every things
 var nbr_color_row = 10 // don't change without break every things
 var pellet_size = board_size / nbr_color;  // black and white color
-var color_picker_height = 100
-
-var border_grid_size = 1
+var color_picker_height = 200
 
 // Internal object
 var square_list = []
@@ -104,8 +102,8 @@ function turn_reset() {
 }
 
 function turn_benjamin() {
-    let color1 = 0;   // red
-    let color2 = 10;  // blue
+    let color1 = 0+nbr_color*nbr_color_row/2;   // red
+    let color2 = 10+nbr_color*nbr_color_row/2;  // blue
     let schema = [
         0, 1, 0, 1, 0, 1, 0, 1,
         1, 0, 1, 0, 1, 0, 1, 0,
@@ -130,15 +128,15 @@ function turn_benjamin() {
 function turn_rainbow() {
     for (let i = 0; i < dim; i++) {
         for (let j = 0; j < dim; j++) {
-            square_list[i+dim*j].color_idx = j + i;
-            square_list[i+dim*j].attr({fill: color_wheel[square_list[i+dim*j].color_idx++]});
+            square_list[i+dim*j].color_idx = j + i + nbr_color*nbr_color_row/2;
+            square_list[i+dim*j].attr({fill: color_wheel[square_list[i+dim*j].color_idx]});
         }
     }
 }
 
 function turn_invader() {
     let color1 = color_wheel.length - 1;  // black
-    let color2 = 7;  // green
+    let color2 = 7+nbr_color*nbr_color_row/2;  // green
     let schema = [
         0, 0, 0, 1, 1, 0, 0, 0,
         0, 0, 1, 1, 1, 1, 0, 0,
@@ -162,7 +160,7 @@ function turn_invader() {
 
 function turn_question() {
     let color1 = color_wheel.length - 1;  // black
-    let color2 = 0;  // red
+    let color2 = 0+nbr_color*nbr_color_row/2;  // red
     let schema = [
         0, 0, 0, 1, 1, 0, 0, 0,
         0, 0, 1, 0, 0, 1, 0, 0,
@@ -205,17 +203,17 @@ var ColorPicker = {
 
 var Client = {
     view: function(vnode) {
-        return m("main", [
+        return m("main", {class: "main"}, [
             m("h1", "Raspberry Pi LED Controler"),
-            m("div", {class: "pure-g"}, [
-                m("div", {class: "pure-u-1"},
-                    m("button", {class: "pure-button pure-button-primary button-on", onclick: function() {turn_on();sensehat_update()}}, "Turn ON"),
-                    m("button", {class: "pure-button pure-button-primary button-on", onclick: function() {turn_off();sensehat_off()}}, "Turn OFF")
+            m("div", {class: "pure-g button-container"}, [
+                m("div", {class: "pure-u-1 pure-button-group", role: "group"},
+                    m("button", {class: "pure-button pure-button-primary", onclick: function() {turn_on();sensehat_update()}}, "Turn ON"),
+                    m("button", {class: "pure-button pure-button-primary", onclick: function() {turn_off();sensehat_off()}}, "Turn OFF")
                 )
             ]),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(Board))),
-            m("div", {class: "pure-g"},
+            m("div", {class: "pure-g button-container"},
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"}, [
                     m("button", {class: "pure-button button-error", onclick: function() {turn_reset();sensehat_update()}}, "Reset"),
                     m("button", {class: "pure-button", onclick: function() {turn_benjamin();sensehat_update()}}, "Benjamin"),
@@ -259,9 +257,10 @@ for (let j = 0; j < dim; j++) {
 }
 
 function create_pellet(form, row, col) {
-    let square = form.rect(col*pellet_size, row*color_picker_height/(nbr_color_row+1), pellet_size - border_grid_size, color_picker_height/(nbr_color_row+1) - border_grid_size);
+    let square = form.rect(col*pellet_size, row*color_picker_height/(nbr_color_row+1), pellet_size, color_picker_height/(nbr_color_row+1));
     square.color_idx = col+row*nbr_color;  // Inject color index property
     square.attr({fill: color_wheel[square.color_idx]});
+    square.attr({stroke: "#ffffff", strokeWidth: 1});
 
     square.click(function () {
         color_picked = square.color_idx;
@@ -269,7 +268,7 @@ function create_pellet(form, row, col) {
     });
 }
 function create_black(form, row, col) {
-    let square = form.rect(col*board_size/2, row*color_picker_height/(nbr_color_row+1), board_size/2 - border_grid_size, color_picker_height/(nbr_color_row+1) - border_grid_size);
+    let square = form.rect(col*board_size/2, row*color_picker_height/(nbr_color_row+1), board_size/2, color_picker_height/(nbr_color_row+1));
     square.color_idx = col+row*nbr_color;  // Inject color index property
     square.attr({fill: color_wheel[square.color_idx]});
 
