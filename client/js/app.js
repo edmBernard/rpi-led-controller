@@ -1,14 +1,22 @@
 var root = document.body
 var count = 0 // added a variable
 
+// parameters
 var dim = 8;
 var board_size = 400;
 var square_size = board_size / dim;
+
+var nbr_color = 20 // don't change without break every things
+var pellet_size = board_size / nbr_color;
+
 var border_grid_size = 1
+
+// Internal object
 var square_list = []
+var color_picked = 0
 
 var color_wheel = []
-for (let i = 0; i < 360; i+=20) {
+for (let i = 0; i < 360; i+=360/nbr_color) {
     color_wheel.push("hsl(" + i/360 + ", 100%, 50%)");
 }
 color_wheel.push("#ffffff");
@@ -45,6 +53,7 @@ function turn_benjamin() {
         0, 1, 0, 1, 0, 1, 0, 1,
         1, 0, 1, 0, 1, 0, 1, 0,
         0, 1, 0, 1, 0, 1, 0, 1,
+        1, 0, 1, 0, 1, 0, 1, 0,
     ]
 
     for (let i = 0; i < square_list.length; i++) {
@@ -117,7 +126,19 @@ function turn_question() {
 
 var Board = {
     view: function(vnode) {
-        return m("board", m("svg", {id: "svg", width: board_size, height: board_size}));
+        return m("board", m("svg", {id: "board", width: board_size, height: board_size}));
+    }
+}
+
+var Board = {
+    view: function(vnode) {
+        return m("svg", {id: "board", width: board_size, height: board_size});
+    }
+}
+
+var ColorPicker = {
+    view: function(vnode) {
+        return m("svg", {id: "colorpicker", width: board_size, height: square_size});
     }
 }
 
@@ -132,7 +153,8 @@ var Client = {
                     m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_reset}, "Reset")
                 )
             ]),
-            m(Board),
+            m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
+            m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(Board))),
             m("div", {class: "pure-g"},
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"}, [
                     m("button", {class: "pure-button", onclick: turn_benjamin}, "Benjamin"),
@@ -147,21 +169,36 @@ var Client = {
 
 m.mount(root, Client)
 
-var s = Snap("#svg");
+
+var sb = Snap("#board");
 for (let i = 0; i < dim; i++) {
     for (let j = 0; j < dim; j++) {
-        let square = s.rect(i * square_size, j * square_size, square_size - border_grid_size, square_size - border_grid_size);
+        let square = sb.rect(i * square_size, j * square_size, square_size, square_size);
         square.attr({fill: color_wheel[0]});
+        square.attr({stroke: "#ffffff", strokeWidth: 1});
         square.color_idx = 1;  // Inject color index property
 
         square_list.push(square);
 
         square.click(function () {
-            if (square.color_idx >= color_wheel.length)
-                square.color_idx = 0;
-            square.attr({fill: color_wheel[square.color_idx++]});
+            square.attr({fill: color_wheel[color_picked]});
         });
     }
+}
+
+
+
+var sc = Snap("#colorpicker");
+for (let i = 0; i < nbr_color; i++) {
+    let square = sc.rect(i * pellet_size, 0, pellet_size - border_grid_size, square_size - border_grid_size);
+    square.attr({fill: color_wheel[i]});
+    square.color_idx = i;  // Inject color index property
+
+    // square_list.push(square);
+
+    square.click(function () {
+        color_picked = square.color_idx;
+    });
 }
 
 
