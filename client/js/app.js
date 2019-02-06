@@ -7,7 +7,7 @@ var board_size = 400;
 var square_size = board_size / dim;
 
 var nbr_color = 20 // don't change without break every things
-var pellet_size = board_size / nbr_color;
+var pellet_size = board_size / (nbr_color + 2);  // black and white color
 
 var border_grid_size = 1
 
@@ -31,13 +31,13 @@ function turn_off() {
 
 function turn_on() {
     for (let i = 0; i < square_list.length; i++) {
-        square_list[i].attr({fill: color_wheel[square_list[i].color_idx - 1]});
+        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
     }
 }
 
 function turn_reset() {
     for (let i = 0; i < square_list.length; i++) {
-        square_list[i].color_idx = 0;
+        square_list[i].color_idx = color_wheel.length - 1;
         square_list[i].attr({fill: color_wheel[square_list[i].color_idx++]});
     }
 }
@@ -62,7 +62,7 @@ function turn_benjamin() {
         } else {
             square_list[i].color_idx = color2+1;
         }
-        square_list[i].attr({fill: color_wheel[square_list[i].color_idx - 1]});
+        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
     }
 }
 
@@ -95,7 +95,7 @@ function turn_invader() {
         } else {
             square_list[i].color_idx = color2+1;
         }
-        square_list[i].attr({fill: color_wheel[square_list[i].color_idx - 1]});
+        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
     }
 }
 
@@ -119,7 +119,7 @@ function turn_question() {
         } else {
             square_list[i].color_idx = color2+1;
         }
-        square_list[i].attr({fill: color_wheel[square_list[i].color_idx - 1]});
+        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
     }
 }
 
@@ -149,14 +149,14 @@ var Client = {
             m("div", {class: "pure-g"}, [
                 m("div", {class: "pure-u-1"},
                     m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_on}, "Turn ON"),
-                    m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_off}, "Turn OFF"),
-                    m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_reset}, "Reset")
+                    m("button", {class: "pure-button pure-button-primary button-on", onclick: turn_off}, "Turn OFF")
                 )
             ]),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(Board))),
             m("div", {class: "pure-g"},
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"}, [
+                    m("button", {class: "pure-button button-error", onclick: turn_reset}, "Reset"),
                     m("button", {class: "pure-button", onclick: turn_benjamin}, "Benjamin"),
                     m("button", {class: "pure-button", onclick: turn_rainbow}, "Rainbow"),
                     m("button", {class: "pure-button", onclick: turn_invader}, "Invader"),
@@ -174,22 +174,32 @@ var sb = Snap("#board");
 for (let i = 0; i < dim; i++) {
     for (let j = 0; j < dim; j++) {
         let square = sb.rect(i * square_size, j * square_size, square_size, square_size);
-        square.attr({fill: color_wheel[0]});
+        square.color_idx = color_wheel.length - 1;  // Inject color index property
+        square.attr({fill: color_wheel[square.color_idx]});
         square.attr({stroke: "#ffffff", strokeWidth: 1});
-        square.color_idx = 1;  // Inject color index property
 
         square_list.push(square);
 
-        square.click(function () {
-            square.attr({fill: color_wheel[color_picked]});
-        });
+        // square.click(function () {
+        //     square.attr({fill: color_wheel[color_picked]});
+        // });
+
+        // ondrag function is more flexible than on click
+        square.drag(
+            function () {},
+            function () {
+                square.color_idx = color_picked;
+                square.attr({fill: color_wheel[color_picked]});
+            },
+            function () {}
+        );
     }
 }
 
 
 
 var sc = Snap("#colorpicker");
-for (let i = 0; i < nbr_color; i++) {
+for (let i = 0; i < nbr_color + 2; i++) {
     let square = sc.rect(i * pellet_size, 0, pellet_size - border_grid_size, square_size - border_grid_size);
     square.attr({fill: color_wheel[i]});
     square.color_idx = i;  // Inject color index property
