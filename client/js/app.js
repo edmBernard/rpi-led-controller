@@ -50,36 +50,32 @@ function get_colors() {
 }
 
 function sensehat_update() {
+    let c = [];
+    if (square_list.length == 0) {
+        for (let i = 0; i < dim*dim; i++) {
+            c.push(color_wheel[color_wheel.length - 1]);
+        }
+    } else {
+        for (let i = 0; i < square_list.length; i++) {
+            c.push(color_wheel[square_list[i].color_idx]);
+        }
+    }
     m.request({
         method: "POST",
         url: "/update",
-        data: function() {
-            let c = [];
-            if (square_list.length == 0) {
-                for (let i = 0; i < dim*dim; i++) {
-                    c.push(color_wheel[color_wheel.length - 1]);
-                }
-            } else {
-                for (let i = 0; i < square_list.length; i++) {
-                    c.push(color_wheel[square_list[i].color_idx]);
-                }
-            }
-            return c;
-        }
+        data: c
     })
 }
 
 function sensehat_off() {
+    let c = [];
+    for (let i = 0; i < dim*dim; i++) {
+        c.push(color_wheel[color_wheel.length - 1]);
+    }
     m.request({
         method: "POST",
         url: "/update",
-        data: function() {
-            let c = [];
-            for (let i = 0; i < dim*dim; i++) {
-                c.push(color_wheel[color_wheel.length - 1]);
-            }
-            return c;
-        }
+        data: c
     })
 }
 
