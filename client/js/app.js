@@ -14,7 +14,7 @@ var color_picker_height = 200
 // Internal object
 var square_list = []
 
-
+// Create Color Wheel
 function hsl2rgb(h,s,l)
 {
     let a=s*Math.min(l,1-l);
@@ -30,12 +30,12 @@ let rgb2hex = (r,g,b) =>
 var color_wheel = []
 for (let j = 0; j < nbr_color_row; j++) {
     for (let i = 0; i < 360; i+= 360/nbr_color) {
-        // color_wheel.push(rgb2hex(...hsl2rgb(i, 1, j*nbr_color_row/100)));
         color_wheel.push(rgb2hex(...hsl2rgb(i, 1, j/(nbr_color_row-1)*(0.7) + 0.2)));
     }
 }
 color_wheel.push("#ffffff");
 color_wheel.push("#000000");
+
 var color_picked = color_wheel.length - 2;
 
 function get_colors() {
@@ -195,13 +195,6 @@ function turn_arrow() {
         0, 0, 0, 1, 1, 0, 0, 0,
     ]
     fill_2color(schema, color1, color2);
-}
-
-
-var Board = {
-    view: function(vnode) {
-        return m("board", m("svg", {id: "board", width: board_size, height: board_size}));
-    }
 }
 
 var Board = {
