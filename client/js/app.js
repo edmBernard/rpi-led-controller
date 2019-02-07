@@ -204,24 +204,24 @@ var ColorPicker = {
 var Client = {
     view: function(vnode) {
         return m("main", {class: "main"}, [
-            m("h1", "Raspberry Pi LED Controller"),
+            m("h1", {class: "small-margin-bottom"}, "Raspberry Pi LED Controller"),
             m("div", {class: "pure-g button-container"}, [
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"},
-                    m("button", {class: "pure-button pure-button-primary", onclick: function() {turn_on();sensehat_update()}}, "Turn ON"),
-                    m("button", {class: "pure-button pure-button-primary", onclick: function() {turn_off();sensehat_off()}}, "Turn OFF")
+                    m("button", {class: "pure-button pure-button-primary", onclick: function() {turn_on();sensehat_update()}}, "ON"),
+                    m("button", {class: "pure-button pure-button-primary", onclick: function() {turn_off();sensehat_off()}}, "OFF"),
+                    m("button", {class: "pure-button button-error", onclick: function() {turn_reset();sensehat_update()}}, "Reset")
                 )
             ]),
-            m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
-            m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(Board))),
             m("div", {class: "pure-g button-container"},
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"}, [
-                    m("button", {class: "pure-button button-error", onclick: function() {turn_reset();sensehat_update()}}, "Reset"),
                     m("button", {class: "pure-button", onclick: function() {turn_benjamin();sensehat_update()}}, "Benjamin"),
                     m("button", {class: "pure-button", onclick: function() {turn_rainbow();sensehat_update()}}, "Rainbow"),
                     m("button", {class: "pure-button", onclick: function() {turn_invader();sensehat_update()}}, "Invader"),
                     m("button", {class: "pure-button", onclick: function() {turn_question();sensehat_update()}}, "Question")
                 ])
-            )
+            ),
+            m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
+            m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(Board)))
         ])
     }
 }

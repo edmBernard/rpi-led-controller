@@ -1,6 +1,6 @@
 
 .button-container {
-    margin: 10px 0px 10px 0px;
+    margin: 0px 0px 4px 0px;
 }
 
 .button-error {
@@ -9,5 +9,10 @@
 }
 
 .main {
-    text-align: center
+    text-align: center;
+    /* background: rgb(50, 50, 50); */
+}
+
+.small-margin-bottom {
+    margin-bottom: 4px;
 }
