@@ -82,6 +82,13 @@ function sensehat_off() {
     })
 }
 
+function fill_2color(schema, color1, color2) {
+    for (let i = 0; i < square_list.length; i++) {
+        square_list[i].color_idx = schema[i] == 0 ? color1 : color2;
+        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
+    }
+}
+
 function turn_off() {
     for (let i = 0; i < square_list.length; i++) {
         square_list[i].attr({fill: "#000000"});
@@ -114,15 +121,7 @@ function turn_benjamin() {
         0, 1, 0, 1, 0, 1, 0, 1,
         1, 0, 1, 0, 1, 0, 1, 0,
     ]
-
-    for (let i = 0; i < square_list.length; i++) {
-        if (schema[i] == 0) {
-            square_list[i].color_idx = color1;
-        } else {
-            square_list[i].color_idx = color2;
-        }
-        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
-    }
+    fill_2color(schema, color1, color2);
 }
 
 function turn_rainbow() {
@@ -147,15 +146,7 @@ function turn_invader() {
         0, 1, 0, 1, 1, 0, 1, 0,
         1, 0, 1, 0, 0, 1, 0, 1,
     ]
-
-    for (let i = 0; i < square_list.length; i++) {
-        if (schema[i] == 0) {
-            square_list[i].color_idx = color1;
-        } else {
-            square_list[i].color_idx = color2;
-        }
-        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
-    }
+    fill_2color(schema, color1, color2);
 }
 
 function turn_question() {
@@ -171,17 +162,24 @@ function turn_question() {
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 1, 0, 0, 0, 0,
     ]
-
-    for (let i = 0; i < square_list.length; i++) {
-        if (schema[i] == 0) {
-            square_list[i].color_idx = color1;
-        } else {
-            square_list[i].color_idx = color2;
-        }
-        square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
-    }
+    fill_2color(schema, color1, color2);
 }
 
+function turn_smiley() {
+    let color1 = color_wheel.length - 1;  // black
+    let color2 = color_wheel.length - 2;  // white
+    let schema = [
+        0, 0, 1, 1, 1, 1, 0, 0,
+        0, 1, 0, 0, 0, 0, 1, 0,
+        1, 0, 1, 0, 1, 0, 0, 1,
+        1, 0, 1, 0, 1, 0, 0, 1,
+        1, 0, 0, 0, 0, 1, 0, 1,
+        1, 0, 1, 1, 1, 0, 0, 1,
+        0, 1, 0, 0, 0, 0, 1, 0,
+        0, 0, 1, 1, 1, 1, 0, 0,
+    ]
+    fill_2color(schema, color1, color2);
+}
 
 var Board = {
     view: function(vnode) {
@@ -217,7 +215,8 @@ var Client = {
                     m("button", {class: "pure-button", onclick: function() {turn_benjamin();sensehat_update()}}, "Benjamin"),
                     m("button", {class: "pure-button", onclick: function() {turn_rainbow();sensehat_update()}}, "Rainbow"),
                     m("button", {class: "pure-button", onclick: function() {turn_invader();sensehat_update()}}, "Invader"),
-                    m("button", {class: "pure-button", onclick: function() {turn_question();sensehat_update()}}, "Question")
+                    m("button", {class: "pure-button", onclick: function() {turn_question();sensehat_update()}}, "Question"),
+                    m("button", {class: "pure-button", onclick: function() {turn_smiley();sensehat_update()}}, "Smiley")
                 ])
             ),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
