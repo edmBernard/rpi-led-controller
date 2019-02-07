@@ -101,10 +101,27 @@ function turn_on() {
     }
 }
 
-function turn_reset() {
+function turn_fill() {
     for (let i = 0; i < square_list.length; i++) {
-        square_list[i].color_idx = color_wheel.length - 1;
+        square_list[i].color_idx = color_picked;
         square_list[i].attr({fill: color_wheel[square_list[i].color_idx]});
+    }
+}
+
+function turn_rotate() {
+
+    let c = [];
+    for (let i = 0; i < dim*dim; i++) {
+        c.push(square_list[i].color_idx);
+    }
+    console.log(c);
+    for (let j = 0; j < dim; j++) {
+        for (let i = 0; i < dim; i++) {
+            let idx_tmp = dim*dim-dim*(i+1)+j
+            console.log(idx_tmp);
+            square_list[idx_tmp].color_idx = c[i+dim*j];
+            square_list[idx_tmp].attr({fill: color_wheel[square_list[idx_tmp].color_idx]});
+        }
     }
 }
 
@@ -217,7 +234,8 @@ var Client = {
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"},
                     m("button", {class: "pure-button button-small pure-button-primary", onclick: function() {turn_on();sensehat_update()}}, "ON"),
                     m("button", {class: "pure-button button-small pure-button-primary", onclick: function() {turn_off();sensehat_off()}}, "OFF"),
-                    m("button", {class: "pure-button button-small button-error", onclick: function() {turn_reset();sensehat_update()}}, "Reset")
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_fill();sensehat_update()}}, "Fill"),
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_rotate();sensehat_update()}}, "Rotate")
                 )
             ]),
             m("div", {class: "pure-g button-container"},
