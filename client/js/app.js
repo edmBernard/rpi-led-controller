@@ -108,22 +108,6 @@ function turn_reset() {
     }
 }
 
-function turn_benjamin() {
-    let color1 = 0+nbr_color*nbr_color_row/2;   // red
-    let color2 = 10+nbr_color*nbr_color_row/2;  // blue
-    let schema = [
-        0, 1, 0, 1, 0, 1, 0, 1,
-        1, 0, 1, 0, 1, 0, 1, 0,
-        0, 1, 0, 1, 0, 1, 0, 1,
-        1, 0, 1, 0, 1, 0, 1, 0,
-        0, 1, 0, 1, 0, 1, 0, 1,
-        1, 0, 1, 0, 1, 0, 1, 0,
-        0, 1, 0, 1, 0, 1, 0, 1,
-        1, 0, 1, 0, 1, 0, 1, 0,
-    ]
-    fill_2color(schema, color1, color2);
-}
-
 function turn_rainbow() {
     for (let i = 0; i < dim; i++) {
         for (let j = 0; j < dim; j++) {
@@ -133,7 +117,7 @@ function turn_rainbow() {
     }
 }
 
-function turn_invader() {
+function turn_invader1() {
     let color1 = color_wheel.length - 1;  // black
     let color2 = 7+nbr_color*nbr_color_row/2;  // green
     let schema = [
@@ -145,6 +129,22 @@ function turn_invader() {
         0, 0, 1, 0, 0, 1, 0, 0,
         0, 1, 0, 1, 1, 0, 1, 0,
         1, 0, 1, 0, 0, 1, 0, 1,
+    ]
+    fill_2color(schema, color1, color2);
+}
+
+function turn_invader2() {
+    let color1 = color_wheel.length - 1;  // black
+    let color2 = 4+nbr_color*nbr_color_row/2;  // white
+    let schema = [
+        0, 1, 0, 0, 0, 0, 1, 0,
+        0, 0, 1, 1, 1, 1, 0, 0,
+        0, 1, 1, 1, 1, 1, 1, 0,
+        1, 1, 0, 1, 1, 0, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        0, 1, 1, 0, 0, 1, 1, 0,
+        1, 0, 1, 0, 0, 1, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 1,
     ]
     fill_2color(schema, color1, color2);
 }
@@ -167,7 +167,7 @@ function turn_question() {
 
 function turn_smiley() {
     let color1 = color_wheel.length - 1;  // black
-    let color2 = color_wheel.length - 2;  // white
+    let color2 = 10+nbr_color*nbr_color_row/2;  // white
     let schema = [
         0, 0, 1, 1, 1, 1, 0, 0,
         0, 1, 0, 0, 0, 0, 1, 0,
@@ -180,6 +180,23 @@ function turn_smiley() {
     ]
     fill_2color(schema, color1, color2);
 }
+
+function turn_arrow() {
+    let color1 = color_wheel.length - 1;  // black
+    let color2 = 0+nbr_color*nbr_color_row/2;  // white
+    let schema = [
+        0, 0, 0, 1, 1, 0, 0, 0,
+        0, 0, 0, 1, 1, 0, 0, 0,
+        0, 0, 0, 1, 1, 0, 0, 0,
+        1, 0, 0, 1, 1, 0, 0, 1,
+        1, 1, 0, 1, 1, 0, 1, 1,
+        0, 1, 1, 1, 1, 1, 1, 0,
+        0, 0, 1, 1, 1, 1, 0, 0,
+        0, 0, 0, 1, 1, 0, 0, 0,
+    ]
+    fill_2color(schema, color1, color2);
+}
+
 
 var Board = {
     view: function(vnode) {
@@ -212,11 +229,12 @@ var Client = {
             ]),
             m("div", {class: "pure-g button-container"},
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"}, [
-                    m("button", {class: "pure-button", onclick: function() {turn_benjamin();sensehat_update()}}, "Benjamin"),
                     m("button", {class: "pure-button", onclick: function() {turn_rainbow();sensehat_update()}}, "Rainbow"),
-                    m("button", {class: "pure-button", onclick: function() {turn_invader();sensehat_update()}}, "Invader"),
+                    m("button", {class: "pure-button", onclick: function() {turn_invader1();sensehat_update()}}, "Invader 1"),
+                    m("button", {class: "pure-button", onclick: function() {turn_invader2();sensehat_update()}}, "Invader 2"),
                     m("button", {class: "pure-button", onclick: function() {turn_question();sensehat_update()}}, "Question"),
-                    m("button", {class: "pure-button", onclick: function() {turn_smiley();sensehat_update()}}, "Smiley")
+                    m("button", {class: "pure-button", onclick: function() {turn_smiley();sensehat_update()}}, "Smiley"),
+                    m("button", {class: "pure-button", onclick: function() {turn_arrow();sensehat_update()}}, "Arrow")
                 ])
             ),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
