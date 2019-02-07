@@ -52,7 +52,7 @@ function get_colors() {
     return c;
 }
 
-function sensehat_update() {
+function sensehat_update_all() {
     let c = [];
     if (square_list.length == 0) {
         for (let i = 0; i < dim*dim; i++) {
@@ -65,9 +65,24 @@ function sensehat_update() {
     }
     m.request({
         method: "POST",
-        url: "/update",
+        url: "/updateall",
         data: c
     })
+}
+
+function sensehat_update_one(x, y) {
+    return function() {
+
+        m.request({
+            method: "POST",
+            url: "/updateone",
+            data: {
+                x: x,
+                y: y,
+                color: color_wheel[square_list[x+dim*y].color_idx]
+            }
+        })
+    }
 }
 
 function sensehat_off() {
@@ -77,7 +92,7 @@ function sensehat_off() {
     }
     m.request({
         method: "POST",
-        url: "/update",
+        url: "/updateall",
         data: c
     })
 }
@@ -114,7 +129,7 @@ function turn_rotate() {
     for (let i = 0; i < dim*dim; i++) {
         c.push(square_list[i].color_idx);
     }
-    console.log(c);
+
     for (let j = 0; j < dim; j++) {
         for (let i = 0; i < dim; i++) {
             let idx_tmp = dim*dim-dim*(i+1)+j
@@ -232,20 +247,20 @@ var Client = {
             m("h1", {class: "small-margin-bottom"}, "Raspberry Pi LED Controller"),
             m("div", {class: "pure-g button-container"}, [
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"},
-                    m("button", {class: "pure-button button-small pure-button-primary", onclick: function() {turn_on();sensehat_update()}}, "ON"),
+                    m("button", {class: "pure-button button-small pure-button-primary", onclick: function() {turn_on();sensehat_update_all()}}, "ON"),
                     m("button", {class: "pure-button button-small pure-button-primary", onclick: function() {turn_off();sensehat_off()}}, "OFF"),
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_fill();sensehat_update()}}, "Fill"),
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_rotate();sensehat_update()}}, "Rotate")
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_fill();sensehat_update_all()}}, "Fill"),
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_rotate();sensehat_update_all()}}, "Rotate")
                 )
             ]),
             m("div", {class: "pure-g button-container"},
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"}, [
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_rainbow();sensehat_update()}}, "Rainbow"),
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_invader1();sensehat_update()}}, "Invader 1"),
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_invader2();sensehat_update()}}, "Invader 2"),
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_question();sensehat_update()}}, "Question"),
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_smiley();sensehat_update()}}, "Smiley"),
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_arrow();sensehat_update()}}, "Arrow")
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_rainbow();sensehat_update_all()}}, "Rainbow"),
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_invader1();sensehat_update_all()}}, "Invader 1"),
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_invader2();sensehat_update_all()}}, "Invader 2"),
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_question();sensehat_update_all()}}, "Question"),
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_smiley();sensehat_update_all()}}, "Smiley"),
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_arrow();sensehat_update_all()}}, "Arrow")
                 ])
             ),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
@@ -277,7 +292,7 @@ for (let j = 0; j < dim; j++) {
             function () {
                 square.color_idx = color_picked;
                 square.attr({fill: color_wheel[color_picked]});
-                sensehat_update();
+                sensehat_update_one(i, j)();
             },
             function () {}
         );
@@ -292,7 +307,7 @@ function create_pellet(form, row, col) {
 
     square.click(function () {
         color_picked = square.color_idx;
-        sensehat_update();
+        sensehat_update_all();
     });
 }
 function create_black(form, row, col) {
@@ -302,7 +317,7 @@ function create_black(form, row, col) {
 
     square.click(function () {
         color_picked = square.color_idx;
-        sensehat_update();
+        sensehat_update_all();
     });
 }
 

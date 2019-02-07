@@ -19,13 +19,24 @@ def do_static(filename):
     """
     return static_file(filename, root="../client/")
 
-@app.route("/update", method='POST')
-def do_update():
-    colors = json.loads(request.body.getvalue().decode('utf-8'))
+@app.route("/updateall", method='POST')
+def do_update_all():
+    pixels = json.loads(request.body.getvalue().decode('utf-8'))
 
-    pixels = [[int(i.lstrip("#")[j:j+2], 16) for j in (0, 2, 4)] for i in colors]
+    colors = [[int(i.lstrip("#")[j:j+2], 16) for j in (0, 2, 4)] for i in pixels]
 
-    app.hat.set_pixels(pixels)
+    app.hat.set_pixels(colors)
+
+    response.status = 200
+    return json.dumps({"message":"Data updated"})
+
+@app.route("/updateone", method='POST')
+def do_update_one():
+    pixel = json.loads(request.body.getvalue().decode('utf-8'))
+
+    color = [[int(pixel["color"].lstrip("#")[j:j+2], 16) for j in (0, 2, 4)]]
+
+    app.hat.set_pixel(pixel["x"], pixel["y"], color)
 
     response.status = 200
     return json.dumps({"message":"Data updated"})
