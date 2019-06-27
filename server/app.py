@@ -1,15 +1,20 @@
 import json
 from fire import Fire
 from bottle import Bottle, request, response, run, static_file
-from sense_hat import SenseHat
+# from sense_hat import SenseHat
 
-sense = SenseHat()
+# sense = SenseHat()
+sense = None
 app = Bottle()
 app.hat = sense
 
 @app.route("/")
 def do_main():
     return static_file("index.html", root="../client/")
+
+@app.route("/list")
+def do_list():
+    return static_file("list.html", root="../client/")
 
 
 @app.route("/<filename:path>")
