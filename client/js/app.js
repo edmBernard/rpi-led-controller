@@ -244,6 +244,13 @@ var ColorPicker = {
 var Client = {
     view: function(vnode) {
         return m("main", {class: "main"}, [
+            m("ul.pure-menu pure-menu-horizontal",
+                m("ul.pure-menu-list", [
+                    m("li.pure-menu-item", m("a.pure-menu-link", {href:"#"}, "Home")),
+                    m("li.pure-menu-item", m("a.pure-menu-link", {href:"#"}, "Create")),
+                    m("li.pure-menu-item", m("a.pure-menu-link", {href:"#"}, "List"))
+                ])
+            ),
             m("h1", {class: "small-margin-bottom"}, "Raspberry Pi LED Controller"),
             m("div", {class: "pure-g button-container"}, [
                 m("div", {class: "pure-u-1 pure-button-group", role: "group"},
@@ -260,7 +267,7 @@ var Client = {
                     m("button", {class: "pure-button button-small", onclick: function() {turn_invader2();sensehat_update_all()}}, "Invader 2"),
                     m("button", {class: "pure-button button-small", onclick: function() {turn_question();sensehat_update_all()}}, "Question"),
                     m("button", {class: "pure-button button-small", onclick: function() {turn_smiley();sensehat_update_all()}}, "Smiley"),
-                    m("button", {class: "pure-button button-small", onclick: function() {turn_arrow();sensehat_update_all()}}, "Arrow")
+                    m("button", {class: "pure-button button-small", onclick: function() {turn_arrow();sensehat_update_all()}}, ["Arrow ", m("i.far fa-trash-alt")])
                 ])
             ),
             m("div", {class: "pure-g"}, m("div", {class: "pure-u-1"}, m(ColorPicker))),
