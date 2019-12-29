@@ -1,3 +1,3 @@
-bottle.py
+bottle
 tornado
 fire

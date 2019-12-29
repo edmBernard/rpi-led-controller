@@ -1,10 +1,10 @@
 import json
 from fire import Fire
 from bottle import Bottle, request, response, run, static_file
-# from sense_hat import SenseHat
+from sense_hat import SenseHat
 
-# sense = SenseHat()
-sense = None
+sense = SenseHat()
+
 app = Bottle()
 app.hat = sense
 
@@ -39,7 +39,7 @@ def do_update_all():
 def do_update_one():
     pixel = json.loads(request.body.getvalue().decode('utf-8'))
 
-    color = [[int(pixel["color"].lstrip("#")[j:j+2], 16) for j in (0, 2, 4)]]
+    color = [int(pixel["color"].lstrip("#")[j:j+2], 16) for j in (0, 2, 4)]
 
     app.hat.set_pixel(pixel["x"], pixel["y"], color)
 
